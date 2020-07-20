@@ -1,5 +1,10 @@
 {
   "extends": "@snowpack/app-scripts-svelte",
-  "scripts": {},
+  "scripts": {
+    "run:tsc": "tsc --noEmit",
+    "run:tsc::watch": "$1 --watch",
+    "build:scss": "postcss",
+    "build:scss::watch": "$1 --watch"
+  },
   "plugins": []
 }

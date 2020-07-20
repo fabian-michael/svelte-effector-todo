@@ -1,3 +1,4 @@
+import './scss';
 import App from "./App.svelte";
 
 var app = new App({

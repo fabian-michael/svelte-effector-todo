@@ -1,57 +1,63 @@
 <script>
-	const message = 'Learn Svelte';
+	import {todos, openTodos, doneTodos, todosApi} from './state/todos.store';
+	import { Form, Field, ErrorMessage } from 'svelte-forms-lib';
+	import { Tabs, Tab, TabList, TabPanel } from 'svelte-tabs';
+	import * as yup from 'yup';
+
+	const formProps = {
+		initialValues: { todo: "" },
+		validationSchema: yup.object().shape({
+			todo: yup
+				.string()
+				.required()
+		}),
+		onSubmit: async ({todo}) => {
+			todosApi.addTodo(todo);
+		},
+	}
 </script>
 
+
 <style>
-	:global(body) {
-		margin: 0;
-		font-family: Arial, Helvetica, sans-serif;
-	}
-	.App {
-		text-align: center;
-	}
-	.App-header {
-		background-color: #F9F6F6;
-		color: #333;
-		min-height: 100vh;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		font-size: calc(10px + 2vmin);
-	}
-	.App-link {
-		color: #ff3e00;
-	}
-	.App-logo {
-		height: 40vmin;
-		pointer-events: none;
-		margin-bottom: 1.0rem;
-		animation: App-logo-spin infinite 1.6s ease-in-out alternate;
-	}
-	@keyframes App-logo-spin {
-		from {
-			transform: scale(1);
-		}
-		to {
-			transform: scale(1.06);
-		}
-	}
+	
 </style>
 
-<div class="App">
-	<header class="App-header">
-		<img src="/logo.svg" class="App-logo" alt="logo" />
-		<p>
-			Edit <code>src/App.svelte</code> and save to reload.
-		</p>
-		<a
-			class="App-link"
-			href="https://svelte.dev"
-			target="_blank"
-			rel="noopener noreferrer"
-		>
-			{message}
-		</a>
-	</header>
+<div class="h-screen p-8 bg-gray-100 app">
+	<div class="container max-w-lg">
+		<div class="p-4 text-white bg-gray-800 rounded-lg shadow-xl">
+			<Form {...formProps}>
+				<label for="todo">Todo Title</label>
+				<div class="">
+					<div class="flex">
+						<Field name="todo" id="todo" placeholder="Lorem ipsum ..." />
+						<button type="submit" class="px-2 py-1 ml-4 bg-blue-500 rounded">Add</button>
+					</div>
+					<ErrorMessage name="todo" />
+				</div>
+			</Form>
+		</div>
+		
+		<div class="mt-8">All</div>
+		<ul>
+			{#each $todos as todo}
+				<li>{JSON.stringify(todo)}<input type="checkbox" on:change={function() {todosApi.toggleDone(todo.id)}} checked={todo.done} /></li>
+			{/each}
+		</ul>
+
+		<div class="mt-8">Open</div>
+		<ul>
+			{#each $openTodos as todo}
+				<li>{JSON.stringify(todo)}<input type="checkbox" on:change={function() {todosApi.toggleDone(todo.id)}} checked={todo.done} /></li>
+			{/each}
+		</ul>
+
+		<div class="mt-8">Done</div>
+		<ul>
+			{#each $doneTodos as todo}
+				<li>{JSON.stringify(todo)}<input type="checkbox" on:change={function() {todosApi.toggleDone(todo.id)}} checked={todo.done} /></li>
+			{/each}
+		</ul>
+
+		
+	</div>
 </div>
