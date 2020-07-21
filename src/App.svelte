@@ -3,6 +3,7 @@
 	import { Form, Field, ErrorMessage } from 'svelte-forms-lib';
 	import { Tabs, Tab, TabList, TabPanel } from 'svelte-tabs';
 	import * as yup from 'yup';
+	import TodoItem from './components/TodoItem.svelte';
 
 	const formProps = {
 		initialValues: { todo: "" },
@@ -40,21 +41,21 @@
 		<div class="mt-8">All</div>
 		<ul>
 			{#each $todos as todo}
-				<li>{JSON.stringify(todo)}<input type="checkbox" on:change={function() {todosApi.toggleDone(todo.id)}} checked={todo.done} /></li>
+				<TodoItem {todo} />
 			{/each}
 		</ul>
 
 		<div class="mt-8">Open</div>
 		<ul>
 			{#each $openTodos as todo}
-				<li>{JSON.stringify(todo)}<input type="checkbox" on:change={function() {todosApi.toggleDone(todo.id)}} checked={todo.done} /></li>
+				<TodoItem {todo} />
 			{/each}
 		</ul>
 
 		<div class="mt-8">Done</div>
 		<ul>
 			{#each $doneTodos as todo}
-				<li>{JSON.stringify(todo)}<input type="checkbox" on:change={function() {todosApi.toggleDone(todo.id)}} checked={todo.done} /></li>
+				<TodoItem {todo} />
 			{/each}
 		</ul>
 

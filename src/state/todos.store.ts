@@ -50,13 +50,14 @@ const toggleDone = produce((draft: DraftState, id: string) => {
 });
 
 /** Set done by id */
-const setDone = produce((draft: DraftState, {id: string, done: boolean}) => {
-    const todo = draft.find(todo => todo.id === id);
-    if (todo) todo.done = !todo.done;
+const setDone = produce((draft: DraftState, payload: {id: string, done: boolean}) => {
+    const todo = draft.find(todo => todo.id === payload.id);
+    if (todo) todo.done = payload.done;
 });
 
 export const todosApi = createApi(todos, {
     addTodo,
     removeTodo,
-    toggleDone
+    toggleDone,
+    setDone
 });
