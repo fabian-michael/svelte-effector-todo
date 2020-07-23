@@ -1,14 +1,13 @@
-<script>
-    import {todosApi} from '../state/todos.store';
+<svelte:options immutable={true} />
 
-    export let todo;
+<script lang="ts">
+    import {todosApi, Todo} from '../state/todos.store';
+
+    export let todo: Todo;
 
     function handleToggle() {
-        todosApi.setDone({
-            id: todo.id,
-            done: this.checked,    
-        })
+        todosApi.toggleDone(todo.id);
     }
 </script>
 
-<li>{JSON.stringify(todo)} <input type="checkbox" on:change={handleToggle} checked={todo.done} /></li>
+<li>{JSON.stringify(todo)} <button on:click={handleToggle} class="bg-gray-300 rounded" class:bg-green-500={todo.done}>{todo.done}</button></li>
